@@ -2,17 +2,17 @@ package ru.romanorlov.relational_data_model.model.entity;
 
 public class Amiibo {
     private int id;
-    private int amiiboSeriesId;
-    private int gameSeriesId;
+    private String amiiboSeriesTitle;
+    private String gameSeriesTitle;
     private String character;
     private String imageLink;
     private String name;
     private String type;
 
-    public Amiibo(int id, int amiiboSeriesId, int gameSeriesId, String character, String imageLink, String name, String type) {
+    public Amiibo(int id, String amiiboSeriesTitle, String gameSeriesTitle, String character, String imageLink, String name, String type) {
         this.id = id;
-        this.amiiboSeriesId = amiiboSeriesId;
-        this.gameSeriesId = gameSeriesId;
+        this.amiiboSeriesTitle = amiiboSeriesTitle;
+        this.gameSeriesTitle = gameSeriesTitle;
         this.character = character;
         this.imageLink = imageLink;
         this.name = name;
@@ -30,20 +30,20 @@ public class Amiibo {
         this.id = id;
     }
 
-    public int getAmiiboSeriesId() {
-        return amiiboSeriesId;
+    public String getAmiiboSeriesTitle() {
+        return amiiboSeriesTitle;
     }
 
-    public void setAmiiboSeriesId(int amiiboSeriesId) {
-        this.amiiboSeriesId = amiiboSeriesId;
+    public void setAmiiboSeriesTitle(String amiiboSeriesTitle) {
+        this.amiiboSeriesTitle = amiiboSeriesTitle;
     }
 
-    public int getGameSeriesId() {
-        return gameSeriesId;
+    public String getGameSeriesTitle() {
+        return gameSeriesTitle;
     }
 
-    public void setGameSeriesId(int gameSeriesId) {
-        this.gameSeriesId = gameSeriesId;
+    public void setGameSeriesTitle(String gameSeriesTitle) {
+        this.gameSeriesTitle = gameSeriesTitle;
     }
 
     public String getCharacter() {

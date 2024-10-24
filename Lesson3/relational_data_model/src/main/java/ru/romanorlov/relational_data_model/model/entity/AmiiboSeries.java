@@ -1,33 +1,15 @@
 package ru.romanorlov.relational_data_model.model.entity;
 
 public class AmiiboSeries {
-    private int id;
-    private int gameSeriesId;
     private String title;
+    private String gameSeriesTitle;
 
-    public AmiiboSeries(int id, int gameSeriesId, String title) {
-        this.id = id;
-        this.gameSeriesId = gameSeriesId;
+    public AmiiboSeries(String title, String gameSeriesTitle) {
         this.title = title;
+        this.gameSeriesTitle = gameSeriesTitle;
     }
 
     public AmiiboSeries() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getGameSeriesId() {
-        return gameSeriesId;
-    }
-
-    public void setGameSeriesId(int gameSeriesId) {
-        this.gameSeriesId = gameSeriesId;
     }
 
     public String getTitle() {
@@ -36,5 +18,13 @@ public class AmiiboSeries {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getGameSeriesTitle() {
+        return gameSeriesTitle;
+    }
+
+    public void setGameSeriesTitle(String gameSeriesTitle) {
+        this.gameSeriesTitle = gameSeriesTitle;
     }
 }

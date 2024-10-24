@@ -4,34 +4,22 @@
 
 CREATE TABLE game_series
 (
-    id                  int     NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE PRIMARY KEY,
-    title               varchar NOT NULL
+    title               varchar NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE amiibo_series
 (
-    id                  int     NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE PRIMARY KEY,
-    game_series_id      int     NOT NULL REFERENCES amiibo(id),
-    title               varchar NOT NULL
+    title               varchar NOT NULL PRIMARY KEY,
+    game_series_title   varchar NOT NULL REFERENCES game_series(title)
 );
 
 CREATE TABLE amiibo
 (
     id                  int     NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE PRIMARY KEY,
-    amiibo_series_id    int NOT NULL UNIQUE REFERENCES amiibo_series(id),
-    game_series_id      int NOT NULL UNIQUE game_series(id),
+    amiibo_series_title varchar NOT NULL REFERENCES amiibo_series(title),
+    game_series_title   varchar NOT NULL REFERENCES game_series(title),
     character           varchar NOT NULL,
     image_link          varchar NOT NULL,
     name                varchar NOT NULL,
     type                varchar NOT NULL
-);
-
-CREATE TABLE release
-(
-    id                  int     NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE PRIMARY KEY,
-    amiibo_id           int     NOT NULL UNIQUE REFERENCES amiibo(id),
-    au                  varchar NOT NULL,
-    eu                  varchar NOT NULL,
-    jp                  varchar NOT NULL,
-    na                  varchar NOT NULL
 );

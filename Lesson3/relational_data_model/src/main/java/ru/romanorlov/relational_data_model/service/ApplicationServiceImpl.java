@@ -4,34 +4,100 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.romanorlov.relational_data_model.client.AmiiboClient;
+import ru.romanorlov.relational_data_model.model.entity.Amiibo;
+import ru.romanorlov.relational_data_model.model.entity.AmiiboSeries;
+import ru.romanorlov.relational_data_model.model.entity.GameSeries;
 import ru.romanorlov.relational_data_model.model.request.AmiiboApiResponse;
 import ru.romanorlov.relational_data_model.model.request.AmiiboInfo;
-import ru.romanorlov.relational_data_model.repository.ApplicationRepositoryImpl;
+import ru.romanorlov.relational_data_model.repository.ApplicationRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final AmiiboClient client;
-    private final ApplicationRepositoryImpl repository;
+    private final Logger applicationLogger;
+    private final ApplicationRepository repository;
 
     @Autowired
-    public ApplicationServiceImpl(AmiiboClient client, ApplicationRepositoryImpl repository) {
+    public ApplicationServiceImpl(AmiiboClient client, ApplicationRepository repository, Logger applicationLogger) {
         this.client = client;
         this.repository = repository;
+        this.applicationLogger = applicationLogger;
     }
 
-    @Override
     @PostConstruct
-    public void loadDataFromApi() {
-        AmiiboApiResponse response = client.getAmiibos();
-        List<AmiiboInfo> amiibos = response.getAmiibo();
+    private void preloadingData() {
+        applicationLogger.info("Старт загрузки данных из API.");
 
-        for (AmiiboInfo amiibo : amiibos) {
-            System.out.println(amiibo.toString());
+        applicationLogger.info("Чистим БД от старых данных.");
+        repository.deleteInfoFromTables();
+
+        applicationLogger.info("Запрос данных из API.");
+        AmiiboApiResponse response = client.getAmiibos();
+        List<AmiiboInfo> amiibosApi = response.getAmiibo();
+
+        applicationLogger.info("Полученные данные.");
+        for (AmiiboInfo amiibo : amiibosApi) {
+            applicationLogger.info(amiibo.toString());
         }
 
-        repository.loadData();
+        applicationLogger.info("Сохранение данных в репозиторий.");
+        applicationLogger.info("Сохранение информации о игровых сериях.");
+        loadGameSeriesInfo(amiibosApi);
+        applicationLogger.info("Сохранение информации о сериях amiibo.");
+        loadAmiiboSeriesInfo(amiibosApi);
+        applicationLogger.info("Сохранение информации о amiibo.");
+        loadAmiiboInfo(amiibosApi);
+
+        applicationLogger.info("Информация загружена.");
     }
+
+    private void loadGameSeriesInfo(List<AmiiboInfo> amiibosApi) {
+        List<GameSeries> gameSeriesList = new ArrayList<>();
+
+        for (AmiiboInfo amiiboApi : amiibosApi) {
+            GameSeries gameSeries = new GameSeries();
+            gameSeries.setTitle(amiiboApi.getGameSeries());
+            gameSeriesList.add(gameSeries);
+        }
+
+        repository.insertGameSeries(gameSeriesList);
+    }
+
+    private void loadAmiiboSeriesInfo(List<AmiiboInfo> amiibosApi) {
+        List<AmiiboSeries> amiiboSeriesList = new ArrayList<>();
+
+        for (AmiiboInfo amiiboApi : amiibosApi) {
+            AmiiboSeries amiiboSeries = new AmiiboSeries();
+            amiiboSeries.setTitle(amiiboApi.getAmiiboSeries());
+            amiiboSeries.setGameSeriesTitle(amiiboApi.getGameSeries());
+            amiiboSeriesList.add(amiiboSeries);
+        }
+
+        repository.insertAmiiboSeries(amiiboSeriesList);
+    }
+
+    private void loadAmiiboInfo(List<AmiiboInfo> amiibosApi) {
+        List<Amiibo> amiibos = new ArrayList<>();
+
+        for (AmiiboInfo amiiboApi : amiibosApi) {
+            Amiibo amiibo = new Amiibo();
+            amiibo.setAmiiboSeriesTitle(amiiboApi.getAmiiboSeries());
+            amiibo.setGameSeriesTitle(amiiboApi.getGameSeries());
+            amiibo.setCharacter(amiiboApi.getCharacter());
+            amiibo.setImageLink(amiiboApi.getImage());
+            amiibo.setName(amiiboApi.getName());
+            amiibo.setType(amiiboApi.getType());
+
+            amiibos.add(amiibo);
+        }
+
+        repository.insertAmiibo(amiibos);
+    }
+
+
 }

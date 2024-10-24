@@ -7,18 +7,16 @@ public class AmiiboInfo {
     private final String head;
     private final String image;
     private final String name;
-    private final AmiiboReleaseInfo release;
     private final String tail;
     private final String type;
 
-    public AmiiboInfo(String amiiboSeries, String character, String gameSeries, String head, String image, String name, AmiiboReleaseInfo release, String tail, String type) {
+    public AmiiboInfo(String amiiboSeries, String character, String gameSeries, String head, String image, String name, String tail, String type) {
         this.amiiboSeries = amiiboSeries;
         this.character = character;
         this.gameSeries = gameSeries;
         this.head = head;
         this.image = image;
         this.name = name;
-        this.release = release;
         this.tail = tail;
         this.type = type;
     }
@@ -47,10 +45,6 @@ public class AmiiboInfo {
         return name;
     }
 
-    public AmiiboReleaseInfo getRelease() {
-        return release;
-    }
-
     public String getTail() {
         return tail;
     }
@@ -66,7 +60,6 @@ public class AmiiboInfo {
                 ", head='" + head + '\'' +
                 ", image='" + image + '\'' +
                 ", name='" + name + '\'' +
-                ", release=" + release +
                 ", tail='" + tail + '\'' +
                 ", type='" + type + '\'' +
                 '}';

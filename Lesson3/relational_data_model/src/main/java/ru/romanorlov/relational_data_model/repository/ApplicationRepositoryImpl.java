@@ -2,12 +2,15 @@ package ru.romanorlov.relational_data_model.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
+import ru.romanorlov.relational_data_model.model.entity.Amiibo;
+import ru.romanorlov.relational_data_model.model.entity.AmiiboSeries;
 import ru.romanorlov.relational_data_model.model.entity.GameSeries;
+import ru.romanorlov.relational_data_model.repository.mapper.AmiiboMapper;
+import ru.romanorlov.relational_data_model.repository.mapper.AmiiboSeriesMapper;
 import ru.romanorlov.relational_data_model.repository.mapper.GameSeriesMapper;
 
 import java.util.List;
@@ -27,37 +30,61 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     }
 
     @Override
-    public void loadData() {
-        dropTables();
-        //TODO доделать
-    }
-
-    @Override
     public void insertGameSeries(GameSeries gameSeries) {
-        jdbcTemplate.update("INSERT INTO game_series VALUES (?)", gameSeries.getTitle());
+        jdbcTemplate.update("INSERT INTO game_series VALUES (?) ON CONFLICT DO NOTHING", gameSeries.getTitle());
     }
 
     @Override
     public void insertGameSeries(List<GameSeries> gameSeries) {
         SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(gameSeries.toArray());
-        namedParameterJdbcTemplate.batchUpdate("INSERT INTO game_series VALUES (:title)", batch);
+        namedParameterJdbcTemplate.batchUpdate("INSERT INTO game_series VALUES (:title) ON CONFLICT DO NOTHING", batch);
     }
 
-    public GameSeries findById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM game_series WHERE id = ?", new GameSeriesMapper(), id);
+    @Override
+    public GameSeries findGameSeriesById(String title) {
+        return jdbcTemplate.queryForObject("SELECT * FROM game_series WHERE title = ?", new GameSeriesMapper(), title);
     }
 
-    private void dropTables() {
+    @Override
+    public void insertAmiiboSeries(AmiiboSeries amiiboSeries) {
+        jdbcTemplate.update("INSERT INTO amiibo_series (title, game_series_title) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                amiiboSeries.getTitle(), amiiboSeries.getGameSeriesTitle());
+    }
+
+    @Override
+    public void insertAmiiboSeries(List<AmiiboSeries> amiiboSeriesList) {
+        SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(amiiboSeriesList.toArray());
+        namedParameterJdbcTemplate.batchUpdate("INSERT INTO amiibo_series (title, game_series_title) VALUES (:title, :gameSeriesTitle) ON CONFLICT DO NOTHING", batch);
+    }
+
+    @Override
+    public AmiiboSeries findAmiiboSeriesByTitle(String title) {
+        return jdbcTemplate.queryForObject("SELECT * FROM amiibo_series WHERE title = ?", new AmiiboSeriesMapper(), title);
+    }
+
+    @Override
+    public void insertAmiibo(Amiibo amiibo) {
+        jdbcTemplate.update("INSERT INTO amiibo (amiibo_series_title, game_series_title, character, image_link, name, type) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING",
+                amiibo.getAmiiboSeriesTitle(), amiibo.getGameSeriesTitle(), amiibo.getCharacter(), amiibo.getImageLink(), amiibo.getName(), amiibo.getType());
+    }
+
+    @Override
+    public void insertAmiibo(List<Amiibo> amiiboList) {
+        SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(amiiboList.toArray());
+        namedParameterJdbcTemplate.batchUpdate("INSERT INTO amiibo (amiibo_series_title, game_series_title, character, image_link, name, type) VALUES (:amiiboSeriesTitle, :gameSeriesTitle, :character, :imageLink, :name, :type) ON CONFLICT DO NOTHING", batch);
+    }
+
+    @Override
+    public Amiibo findAmiiboById(int id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM amiibo WHERE id = ?", new AmiiboMapper(), id);
+    }
+
+    @Override
+    public void deleteInfoFromTables() {
         jdbcTemplate.execute(
-            "DELETE FROM amiibo_amiibo_series;" +
-                "DELETE FROM amiibo_game_series;" +
+                "DELETE FROM amiibo;" +
                 "DELETE FROM amiibo_series;" +
                 "DELETE FROM game_series;" +
-                "DELETE FROM release;" +
-                "DELETE FROM amiibo;" +
-                "ALTER SEQUENCE amiibo_id_seq RESTART;" +
-                "ALTER SEQUENCE release_id_seq RESTART;" +
-                "ALTER SEQUENCE game_series_id_seq RESTART;" +
-                "ALTER SEQUENCE amiibo_series_id_seq RESTART;");
+                "ALTER SEQUENCE amiibo_id_seq RESTART;");
     }
 }
