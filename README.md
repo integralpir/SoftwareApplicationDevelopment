@@ -48,7 +48,7 @@ ___
 - Гость - Чачин Филипп, автоматизатор тестирования
 - Ссылка на вопросы - https://docs.google.com/spreadsheets/d/17K_wSq3u47J9kfptBCVvMB733qdVTXFqrWlcE6KY_b8/edit?gid=0#gid=0
 ___
-#### 25.10.2024 20:00
+#### 25.10.2024 21:30
 
 - Гость - Солоницин Дмитрий, системный аналитик
 - Ссылка на вопросы - https://docs.google.com/spreadsheets/d/1yhfiXSqpk_6mjpnMIzCjcaBBHd5a42mHHSOcK6h12iE/edit?gid=0#gid=0
