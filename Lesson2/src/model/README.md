@@ -9,11 +9,11 @@
 1. мне интересно;
 2. незамысловатый и понятный сайт;
 
-![](../../images/api_home.png)
+![](../../_images/api_home.png)
 
 3. простая документация;
 
-![img.png](../../images/api_doc.png)
+![img.png](../../_images/api_doc.png)
 4. REST API;
 5. без аутентификации.
 
@@ -31,7 +31,7 @@
 url - https://amiiboapi.com/api/amiibo/
 http method - GET
 
-![](../../images/postman_example1.png)
+![](../../_images/postman_example1.png)
 
 ```json
 {

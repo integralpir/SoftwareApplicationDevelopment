@@ -1,0 +1,10 @@
+services:
+  mongoDB:
+    image: mongodb/mongodb-community-server
+    container_name: mongodb-document-oriented-data-model
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      MONGO_INITDB_DATABASE: application_db

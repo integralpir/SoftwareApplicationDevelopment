@@ -8,7 +8,7 @@ import ru.romanorlov.relational_data_model.model.entity.Amiibo;
 import ru.romanorlov.relational_data_model.model.entity.AmiiboSeries;
 import ru.romanorlov.relational_data_model.model.entity.GameSeries;
 import ru.romanorlov.relational_data_model.model.request.AmiiboApiResponse;
-import ru.romanorlov.relational_data_model.model.request.AmiiboInfo;
+import ru.romanorlov.relational_data_model.model.request.AmiiboApiInfo;
 import ru.romanorlov.relational_data_model.repository.ApplicationRepository;
 
 import java.util.ArrayList;
@@ -38,10 +38,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         applicationLogger.info("Запрос данных из API.");
         AmiiboApiResponse response = client.getAmiibos();
-        List<AmiiboInfo> amiibosApi = response.getAmiibo();
+        List<AmiiboApiInfo> amiibosApi = response.getAmiibo();
 
         applicationLogger.info("Полученные данные.");
-        for (AmiiboInfo amiibo : amiibosApi) {
+        for (AmiiboApiInfo amiibo : amiibosApi) {
             applicationLogger.info(amiibo.toString());
         }
 
@@ -56,10 +56,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         applicationLogger.info("Информация загружена.");
     }
 
-    private void loadGameSeriesInfo(List<AmiiboInfo> amiibosApi) {
+    private void loadGameSeriesInfo(List<AmiiboApiInfo> amiibosApi) {
         List<GameSeries> gameSeriesList = new ArrayList<>();
 
-        for (AmiiboInfo amiiboApi : amiibosApi) {
+        for (AmiiboApiInfo amiiboApi : amiibosApi) {
             GameSeries gameSeries = new GameSeries();
             gameSeries.setTitle(amiiboApi.getGameSeries());
             gameSeriesList.add(gameSeries);
@@ -68,10 +68,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         repository.insertGameSeries(gameSeriesList);
     }
 
-    private void loadAmiiboSeriesInfo(List<AmiiboInfo> amiibosApi) {
+    private void loadAmiiboSeriesInfo(List<AmiiboApiInfo> amiibosApi) {
         List<AmiiboSeries> amiiboSeriesList = new ArrayList<>();
 
-        for (AmiiboInfo amiiboApi : amiibosApi) {
+        for (AmiiboApiInfo amiiboApi : amiibosApi) {
             AmiiboSeries amiiboSeries = new AmiiboSeries();
             amiiboSeries.setTitle(amiiboApi.getAmiiboSeries());
             amiiboSeries.setGameSeriesTitle(amiiboApi.getGameSeries());
@@ -81,10 +81,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         repository.insertAmiiboSeries(amiiboSeriesList);
     }
 
-    private void loadAmiiboInfo(List<AmiiboInfo> amiibosApi) {
+    private void loadAmiiboInfo(List<AmiiboApiInfo> amiibosApi) {
         List<Amiibo> amiibos = new ArrayList<>();
 
-        for (AmiiboInfo amiiboApi : amiibosApi) {
+        for (AmiiboApiInfo amiiboApi : amiibosApi) {
             Amiibo amiibo = new Amiibo();
             amiibo.setAmiiboSeriesTitle(amiiboApi.getAmiiboSeries());
             amiibo.setGameSeriesTitle(amiiboApi.getGameSeries());

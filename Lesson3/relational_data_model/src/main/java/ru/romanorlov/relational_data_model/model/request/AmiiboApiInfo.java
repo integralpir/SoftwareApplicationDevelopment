@@ -1,6 +1,6 @@
 package ru.romanorlov.relational_data_model.model.request;
 
-public class AmiiboInfo {
+public class AmiiboApiInfo {
     private final String amiiboSeries;
     private final String character;
     private final String gameSeries;
@@ -10,7 +10,7 @@ public class AmiiboInfo {
     private final String tail;
     private final String type;
 
-    public AmiiboInfo(String amiiboSeries, String character, String gameSeries, String head, String image, String name, String tail, String type) {
+    public AmiiboApiInfo(String amiiboSeries, String character, String gameSeries, String head, String image, String name, String tail, String type) {
         this.amiiboSeries = amiiboSeries;
         this.character = character;
         this.gameSeries = gameSeries;

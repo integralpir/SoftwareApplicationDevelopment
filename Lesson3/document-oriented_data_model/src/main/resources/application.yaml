@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: DocumentOrientedDataModel
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: application_db
+      username: mongo
+      password: mongo
+      authentication-database: admin

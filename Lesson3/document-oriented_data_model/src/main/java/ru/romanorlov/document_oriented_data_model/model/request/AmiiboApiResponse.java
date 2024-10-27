@@ -1,4 +1,4 @@
-package ru.romanorlov.relational_data_model.model.request;
+package ru.romanorlov.document_oriented_data_model.model.request;
 
 import java.util.List;
 
