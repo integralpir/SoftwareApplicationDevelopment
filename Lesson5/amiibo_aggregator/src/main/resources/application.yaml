@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: relational_data_model
+  datasource:
+    url: jdbc:postgresql://localhost:5432/application_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: classpath:db/db.changelog-master.yaml
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+server:
+  port: 8080

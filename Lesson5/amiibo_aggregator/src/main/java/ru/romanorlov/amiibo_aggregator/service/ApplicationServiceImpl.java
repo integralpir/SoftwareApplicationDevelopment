@@ -99,7 +99,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         repository.insertAmiibo(amiibos);
     }
 
-    public void getAmiiboByCharacter(String character) {
+    @Override
+    public List<Amiibo> getAllAmiibos() {
+        List<Amiibo> amiibos = repository.findAllAmiibos();
 
+        if (amiibos == null || amiibos.isEmpty()) {
+            throw new RuntimeException("Амиибо не найдены.");
+        }
+
+        return amiibos;
     }
+
+    @Override
+    public Amiibo getAmiiboByCharacter(String character) {
+        Amiibo amiibo = repository.findAmiiboByCharacter(character);
+
+        if (amiibo == null) {
+            throw new RuntimeException("Амиибо не найден. Персонаж: " + character);
+        }
+
+        applicationLogger.info("Амиибо найден. Персонаж: " + character);
+
+        return amiibo;
+    }
+
+
 }
