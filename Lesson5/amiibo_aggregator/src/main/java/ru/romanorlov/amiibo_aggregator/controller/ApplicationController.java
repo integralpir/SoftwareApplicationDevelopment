@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/relational_data_app/api/")
+@RequestMapping("/amiibo_aggregator/api/")
 public class ApplicationController {
 
     private final ApplicationService service;
