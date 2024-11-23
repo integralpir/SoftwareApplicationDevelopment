@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.romanorlov.AmiibosAggregator.model.entity.AmiiboSeries;
 import ru.romanorlov.AmiibosAggregator.model.response.AmiiboRs;
 import ru.romanorlov.AmiibosAggregator.model.response.AmiiboSeriesRs;
 import ru.romanorlov.AmiibosAggregator.model.response.GameSeriesRs;
@@ -47,13 +46,13 @@ public class ApplicationController {
 
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/amiibo")
-    public List<AmiiboRs> amiiboRs() {
+    public List<AmiiboRs> amiibo() {
         return service.getAllAmiibos();
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/amiibo", params = {"character"})
-    public List<AmiiboRs> amiiboRsByCharacter(@RequestParam(name = "character") String character) {
+    public List<AmiiboRs> amiibo(@RequestParam(name = "character") String character) {
         return service.getAmiibosByCharacter(character);
     }
 }
