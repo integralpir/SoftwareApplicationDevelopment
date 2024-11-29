@@ -30,7 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final AmiiboSeriesRepository amiiboSeriesRepository;
 
     @PostConstruct
-    private void preloadingData() {
+    public void preloadingData() {
         log.info("Старт загрузки данных из API.");
 
         log.info("Чистим БД от старых данных.");

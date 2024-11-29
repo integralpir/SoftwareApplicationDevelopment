@@ -1,31 +1,33 @@
 app:
-  name: AmiibosAggregator
-
+  name: amiibos-aggregator
 spring:
-  cloud:
-    consul:
-      config:
-        enabled: false
-    vault:
-      enabled: false
   application:
     name: ${app.name}
-  datasource:
-    url: jdbc:postgresql://localhost:5432/application_db
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-  liquibase:
-    change-log: classpath:db/db.changelog-master.yaml
-    url: ${spring.datasource.url}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
-  codec:
-    max-in-memory-size: 10MB
-
-client:
-  connection-timeout: 5000
-  response-timeout: 5000
-  amiibo:
-    base-url: https://amiiboapi.com/api
-    amiibo-path: /amiibo/
+  config:
+    import: consul:,vault://
+  cloud:
+    consul:
+      enabled: true
+      host: localhost
+      port: 8500
+      config:
+        enabled: true
+        format: YAML
+        prefixes: ru/romanorlov
+        data-key: data
+        watch:
+          wait-time: 15
+          delay: 5000
+        profile-separator: /
+    vault:
+      enabled: true
+      scheme: http
+      host: localhost
+      port: 8200
+      fail-fast: true
+      authentication: token
+      token: root
+      kv:
+        enabled: true
+        default-context: ''
+        backend: kv/app

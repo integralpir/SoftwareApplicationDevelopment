@@ -1,0 +1,23 @@
+app:
+  name: amiibos-aggregator
+
+spring:
+  application:
+    name: ${app.name}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/application_db
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:db/db.changelog-master.yaml
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  codec:
+    max-in-memory-size: 10MB
+
+client:
+  connection-timeout: 5000
+  response-timeout: 5000
+  amiibo:
+    base-url: https://amiiboapi.com/api
+    amiibo-path: /amiibo/
